@@ -9,3 +9,10 @@ pub struct EightBallsResponse {
 pub struct EmojiMixReponse {
     pub emoji_url: String
 }
+
+#[derive(Deserialize)]
+pub struct FunFactResponse {
+    pub text: String,
+    pub source_url: String,
+    pub language: String
+}

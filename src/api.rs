@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse};
+use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse};
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -44,6 +44,18 @@ impl OxiPlume {
             .await
             .map_err(OxiError::ReqwestError)?
             .json::<EmojiMixReponse>()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
+
+    pub async fn funfact(&self, locale: &str) -> Result<FunFactResponse, OxiError> {
+        let url = format!("{}/funfact?locale={}", self.base_url, locale);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json::<FunFactResponse>()
             .await
             .map_err(OxiError::ReqwestError)?;
         Ok(response)

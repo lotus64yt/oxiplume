@@ -30,3 +30,12 @@ impl Buffer for IssImageResponse {
 pub trait Buffer {
     fn as_slice(&self) -> &[u8];
 }
+
+#[derive(Deserialize)]
+pub struct IssInfosResponse {
+    pub latitude: f64,
+    pub longitude: f64,
+    pub altitude: f64,
+    pub timestamp: u64,
+    pub velocity: f64,
+}

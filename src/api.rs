@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse};
+use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse};
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -97,7 +97,25 @@ impl OxiPlume {
         Ok(response)
     }
 
-    
+    pub async fn math(&self, expression: &str) -> Result<MathReponse, OxiError> {
+        if expression.len() < 1 || expression.len() > 100 {
+            return Err(OxiError::InvalidResponse("Expression length must be between 1 and 100".to_string()));
+        }
+        let url = format!("{}/math?expression={}", self.base_url, expression);
+        let response: MathReponse = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+
+        if response.result.is_none() {
+            return Err(OxiError::InvalidResponse("Invalid expression".to_string()));
+        }
+        
+        Ok(response)
+    }
 
     // pub async fn get_message(&self) -> Result<ApiResponse, ApiError> {
     //     let url = format!("{}/message", self.base_url);

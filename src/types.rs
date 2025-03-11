@@ -45,3 +45,8 @@ pub struct JokeResponse {
     pub question: String,
     pub answer: String
 }
+
+#[derive(Deserialize)]
+pub struct MathReponse {
+    pub result: Option<String>
+}

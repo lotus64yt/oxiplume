@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse};
+use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse, MemeResponse};
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -114,6 +114,18 @@ impl OxiPlume {
             return Err(OxiError::InvalidResponse("Invalid expression".to_string()));
         }
         
+        Ok(response)
+    }
+
+    pub async fn meme(&self) -> Result<MemeResponse, OxiError> {
+        let url = format!("{}/meme", self.base_url);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json::<MemeResponse>()
+            .await
+            .map_err(OxiError::ReqwestError)?;
         Ok(response)
     }
 

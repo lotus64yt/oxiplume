@@ -61,3 +61,14 @@ pub struct MemeResponse {
     pub comments: u64,
     pub author: String
 }
+
+#[derive(Deserialize)]
+pub struct NasaApodResponse {
+    pub date: String,
+    pub title: String,
+    pub url: String,
+    pub hd_url: String,
+    pub explanation: String,
+    pub page_url: String,
+    pub media_type: String
+}

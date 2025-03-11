@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse, MemeResponse};
+use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse, MemeResponse, NasaApodResponse};
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -129,6 +129,17 @@ impl OxiPlume {
         Ok(response)
     }
 
+    pub async fn nasa_apod(&self) -> Result<NasaApodResponse, OxiError> {
+        let url = format!("{}/nasa-apod", self.base_url);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json::<NasaApodResponse>()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
     // pub async fn get_message(&self) -> Result<ApiResponse, ApiError> {
     //     let url = format!("{}/message", self.base_url);
     //     let response = self.client.get(&url).send().await?.json::<ApiResponse>().await?;

@@ -16,3 +16,17 @@ pub struct FunFactResponse {
     pub source_url: String,
     pub language: String
 }
+
+pub struct IssImageResponse {
+    pub image: Vec<u8>,
+}
+
+impl Buffer for IssImageResponse {
+    fn as_slice(&self) -> &[u8] {
+        &self.image
+    }
+}
+
+pub trait Buffer {
+    fn as_slice(&self) -> &[u8];
+}

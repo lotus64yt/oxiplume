@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse};
+use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse};
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -59,6 +59,18 @@ impl OxiPlume {
             .await
             .map_err(OxiError::ReqwestError)?;
         Ok(response)
+    }
+
+    pub async fn iss_image(&self, circle: bool) -> Result<IssImageResponse, OxiError> {
+        let url = format!("{}/iss-image?circle={}", self.base_url, circle);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .bytes()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(IssImageResponse { image: response.to_vec() })
     }
 
     // pub async fn get_message(&self) -> Result<ApiResponse, ApiError> {

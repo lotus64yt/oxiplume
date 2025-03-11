@@ -1,5 +1,5 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse};
+use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse};
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -84,6 +84,20 @@ impl OxiPlume {
             .map_err(OxiError::ReqwestError)?;
         Ok(IssInfosResponse { latitude: response.latitude, longitude: response.longitude, altitude: response.altitude, timestamp: response.timestamp, velocity: response.velocity })
     }
+
+    pub async fn joke(&self, locale: &str) -> Result<JokeResponse, OxiError> {
+        let url = format!("{}/joke?locale={}", self.base_url, locale);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json::<JokeResponse>()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
+
+    
 
     // pub async fn get_message(&self) -> Result<ApiResponse, ApiError> {
     //     let url = format!("{}/message", self.base_url);

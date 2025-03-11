@@ -39,3 +39,9 @@ pub struct IssInfosResponse {
     pub timestamp: u64,
     pub velocity: f64,
 }
+
+#[derive(Deserialize)]
+pub struct JokeResponse {
+    pub question: String,
+    pub answer: String
+}

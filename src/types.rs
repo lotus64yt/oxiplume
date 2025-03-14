@@ -72,3 +72,17 @@ pub struct NasaApodResponse {
     pub page_url: String,
     pub media_type: String
 }
+
+#[derive(Deserialize)]
+pub struct NpmResponse {
+    pub name: String,
+    pub description: String,
+    pub version: String,
+    pub keywords: Vec<String>,
+    pub author_username: String,
+    pub author_email: String,
+    pub repository_url: String,
+    pub npm_url: String,
+    pub last_published_date: String,
+    pub last_published: u64,
+}

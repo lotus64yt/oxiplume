@@ -92,3 +92,74 @@ pub struct QuoteResponse {
     pub quote: String,
     pub author: String
 }
+
+#[derive(Deserialize)]
+pub struct RandomEmojiMixResponse {
+    pub emoji_url: String
+}
+
+#[derive(Deserialize)]
+pub struct UpsideDownResponse {
+    pub text: String
+}
+
+#[derive(Deserialize)]
+pub struct UrbanDictionaryResponse {
+    pub word: String,
+    pub url: String,
+    pub definition: String,
+    pub example: String,
+    pub author: String,
+    pub thumbs_up: u64,
+    pub thumbs_down: u64,
+}
+
+#[derive(Deserialize)]
+pub struct RGB {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub value: String,
+}
+
+#[derive(Deserialize)]
+pub struct HSL {
+    pub h: u16,
+    pub s: u8,
+    pub l: u8,
+    pub value: String,
+}
+
+#[derive(Deserialize)]
+pub struct HSV {
+    pub h: u16,
+    pub s: u8,
+    pub v: u8,
+    pub value: String,
+}
+
+#[derive(Deserialize)]
+pub struct CMYK {
+    pub c: u8,
+    pub m: u8,
+    pub y: u8,
+    pub k: u8,
+    pub value: String,
+}
+
+#[derive(Deserialize)]
+pub struct HEX {
+    pub value: String,
+    pub clean: String,
+}
+
+#[derive(Deserialize)]
+pub struct ColorReponse {
+    pub rgb: RGB,
+    pub hsl: HSL,
+    pub hsv: HSV,
+    pub cmyk: CMYK,
+    pub name: String,
+    pub hex: HEX,
+    pub url: String,
+}

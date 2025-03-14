@@ -1,5 +1,6 @@
 use reqwest::Client;
-use crate::types::{EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse, MemeResponse, NasaApodResponse, NpmResponse, QuoteResponse};
+use crate::types::{ColorReponse, EightBallsResponse, EmojiMixReponse, FunFactResponse, IssImageResponse, IssInfosResponse, JokeResponse, MathReponse, MemeResponse, NasaApodResponse, NpmResponse, QuoteResponse, UpsideDownResponse, UrbanDictionaryResponse};
+use regex::Regex;
 
 #[derive(Debug)]
 pub enum OxiError {
@@ -160,6 +161,57 @@ impl OxiPlume {
             .await
             .map_err(OxiError::ReqwestError)?
             .json::<QuoteResponse>()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
+
+    pub async fn random_emoji_mix(&self) -> Result<EmojiMixReponse, OxiError> {
+        let url = format!("{}/random-emoji-mix", self.base_url);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json::<EmojiMixReponse>()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
+
+    pub async fn upside_down(&self, text: &str) -> Result<UpsideDownResponse, OxiError> {
+        let url = format!("{}/upside-down?text={}", self.base_url, text);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
+
+    pub async fn urban(&self, term: &str) -> Result<UrbanDictionaryResponse, OxiError> {
+        let url = format!("{}/urban?word={}", self.base_url, term);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json()
+            .await
+            .map_err(OxiError::ReqwestError)?;
+        Ok(response)
+    }
+
+    pub async fn color(&self, color: &str) -> Result<ColorReponse, OxiError> {
+        if !Regex::new(r"^[A-Fa-f0-9]{6}$").unwrap().is_match(color) {
+            return Err(OxiError::InvalidResponse("Invalid color format".to_string()));
+        }
+        let url = format!("{}/color?color={}", self.base_url, color);
+        let response = self.client.get(&url)
+            .send()
+            .await
+            .map_err(OxiError::ReqwestError)?
+            .json()
             .await
             .map_err(OxiError::ReqwestError)?;
         Ok(response)

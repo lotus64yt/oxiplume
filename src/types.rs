@@ -86,3 +86,9 @@ pub struct NpmResponse {
     pub last_published_date: String,
     pub last_published: u64,
 }
+
+#[derive(Deserialize)]
+pub struct QuoteResponse {
+    pub quote: String,
+    pub author: String
+}
